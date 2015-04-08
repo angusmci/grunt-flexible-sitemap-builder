@@ -37,13 +37,23 @@ module.exports = function(grunt) {
           'tmp/default_options.xml': ['test/fixtures/test-document-1.html', 'test/fixtures/test-document-2.html', 'test/fixtures/test-document-3.html']
         }
       },
-      custom_options: {
+      custom_options1: {
         options: {
           baseurl: 'http://mydomain.com/',
           compress: false
         },
         files: {
-          'tmp/custom_options.xml': ['test/fixtures/*.html']
+          'tmp/custom_options1.xml': ['test/fixtures/*.html']
+        }
+      },
+      custom_options2: {
+        options: {
+          baseurl: 'http://otherdomain.com/',
+          compress: false,
+          default_settings: "monthly,0.7"
+        },
+        files: {
+          'tmp/custom_options2.xml': ['test/fixtures/*.html']
         }
       }
     },

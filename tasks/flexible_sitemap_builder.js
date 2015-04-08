@@ -99,7 +99,7 @@ module.exports = function(grunt) {
     var stat = fs.lstatSync(absfilepath);
     var timestamp = stat.mtime;
     var url = options.baseurl + filepath;
-    var setting_string = read_setting_string(absfilepath,parser,store);
+    var setting_string = read_setting_string(absfilepath,options,parser,store);
     console.log("Setting string = " + setting_string);
     if (setting_string === "") {
         console.log("Returning blank");
@@ -114,11 +114,34 @@ module.exports = function(grunt) {
     }
   };
   
-  var read_setting_string = function(filepath,parser,store) {
+  var read_setting_string = function(filepath,options,parser,store) {
+  
+      // Parse the HTML file, looking for an 'x-sitemap-settings' meta element.
+      
       var html = fs.readFileSync(filepath,'utf8');
       delete store["sitemap_settings"];
       parser.write(html);
       parser.end();
-      return (store["sitemap_settings"] === undefined ? "" : store["sitemap_settings"]);
+      
+      // If the file doesn't contain the element, then return a default or nothing.
+      
+      if (store["sitemap_settings"] === undefined) {
+      
+        // Return the default value specified in the options.
+        
+        if (options.default_settings) {
+          return options.default_settings;
+        }
+        
+        // No default value; don't add this file to the map.
+        
+        else {
+          return "";
+        }
+      }
+      
+      // Return the value found in the file.
+      
+      return store["sitemap_settings"];
   };
 };
