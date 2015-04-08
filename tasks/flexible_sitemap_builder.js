@@ -22,7 +22,8 @@ module.exports = function(grunt) {
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({
       baseurl: 'http://example.com/',
-      compress: true
+      compress: true,
+      indexes: 'index.html'
     });
 
 	var parserStore = [];
@@ -98,7 +99,7 @@ module.exports = function(grunt) {
     var absfilepath = path.join(cwd_dir,filepath);
     var stat = fs.lstatSync(absfilepath);
     var timestamp = stat.mtime;
-    var url = options.baseurl + filepath;
+    var url = build_url(filepath,options);
     var setting_string = read_setting_string(absfilepath,options,parser,store);
     console.log("Setting string = " + setting_string);
     if (setting_string === "") {
@@ -112,6 +113,31 @@ module.exports = function(grunt) {
         console.log("Returning a URL element");
         return "\n\t<url>\n\t\t<loc>" + url + "</loc>\n\t\t<changefreq>" + changefreq + "</changefreq>\n\t\t<priority>" + priority + "</priority>\n\t\t<lastmod>" + timestamp.toISOString() + "</lastmod>\n\t</url>";
     }
+  };
+  
+  var build_url = function(filepath,options) {
+    
+    // If the filename is one of the names given in indexes, e.g. 'index.html', then
+    // strip off the filename before building the URL.
+    
+    var filename = path.basename(filepath);
+    if (options.indexes.indexOf(filename) >= 0) {
+      filepath = path.dirname(filepath);
+      
+      // Hack the modified filepath slightly to cope with the root index and ensure
+      // that subindexes get a trailing slash.
+      
+      if ("." === filepath) {
+        filepath = "";
+      }
+      else {
+        filepath = filepath + "/";
+      }
+    }
+    
+    // Construct the URL based on the base URL provided in options.
+    
+    return options.baseurl + filepath;
   };
   
   var read_setting_string = function(filepath,options,parser,store) {

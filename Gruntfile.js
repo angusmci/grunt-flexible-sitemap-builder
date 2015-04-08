@@ -60,7 +60,8 @@ module.exports = function(grunt) {
         options: {
           baseurl: 'http://anotherdomain.net/',
           compress: false,
-          default_settings: "monthly,0.7"
+          default_settings: "monthly,0.7",
+          indexes: [ 'index.html', 'index.php' ]
         },
 		files: [{
 			expand: false,
