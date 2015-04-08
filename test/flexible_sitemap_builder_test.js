@@ -30,18 +30,22 @@ exports.flexible_sitemap_builder = {
   default_options: function(test) {
     test.expect(1);
 
-    var actual = grunt.file.read('tmp/default_options.xml');
-    var expected = grunt.file.read('test/expected/default_options.xml');
-    test.equal(actual, expected, 'should describe what the default behavior is.');
+    var actual = grunt.file.read('tmp/default_options.xml.gz');
+    var expected = grunt.file.read('test/expected/default_options.xml.gz');
+    test.equal(actual, expected, 'Default file should be compressed.');
 
     test.done();
   },
   custom_options: function(test) {
-    test.expect(1);
+    test.expect(2);
 
-    var actual = grunt.file.read('tmp/custom_options.xml');
-    var expected = grunt.file.read('test/expected/custom_options.xml');
-    test.equal(actual, expected, 'should describe what the custom option(s) behavior is.');
+    var actual1 = grunt.file.read('tmp/custom_options1.xml');
+    var expected1 = grunt.file.read('test/expected/custom_options1.xml');
+    test.equal(actual1, expected1, 'should describe what the custom option(s) behavior is.');
+
+    var actual2 = grunt.file.read('tmp/custom_options2.xml');
+    var expected2 = grunt.file.read('test/expected/custom_options2.xml');
+    test.equal(actual2, expected2, 'should describe what the custom option(s) behavior is.');
 
     test.done();
   },
