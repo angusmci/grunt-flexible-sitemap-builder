@@ -101,16 +101,13 @@ module.exports = function(grunt) {
     var timestamp = stat.mtime;
     var url = build_url(filepath,options);
     var setting_string = read_setting_string(absfilepath,options,parser,store);
-    console.log("Setting string = " + setting_string);
     if (setting_string === "") {
-        console.log("Returning blank");
         return "";
     }
     else {
         var pieces = setting_string.split(",");
         var changefreq = pieces[0];
         var priority = pieces[1];
-        console.log("Returning a URL element");
         return "\n\t<url>\n\t\t<loc>" + url + "</loc>\n\t\t<changefreq>" + changefreq + "</changefreq>\n\t\t<priority>" + priority + "</priority>\n\t\t<lastmod>" + timestamp.toISOString() + "</lastmod>\n\t</url>";
     }
   };
