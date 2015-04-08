@@ -55,6 +55,19 @@ module.exports = function(grunt) {
         files: {
           'tmp/custom_options2.xml': ['test/fixtures/*.html']
         }
+      },
+      custom_options3: {
+        options: {
+          baseurl: 'http://anotherdomain.net/',
+          compress: false,
+          default_settings: "monthly,0.7"
+        },
+		files: [{
+			expand: false,
+			cwd: 'test/fixtures/subdir',
+			src: ['**/*.html'],
+			dest: 'tmp/custom_options3.xml'
+		}]
       }
     },
 
