@@ -65,7 +65,7 @@ module.exports = function(grunt) {
 		files: [{
 			expand: false,
 			cwd: 'test/fixtures/subdir',
-			src: ['**/*.html'],
+			src: ['**/*.html', '**/*.php'],
 			dest: 'tmp/custom_options3.xml'
 		}]
       }

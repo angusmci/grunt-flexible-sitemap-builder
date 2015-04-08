@@ -13,15 +13,15 @@
 		<lastmod>2015-04-03T12:18:19.000Z</lastmod>
 	</url>
 	<url>
-		<loc>http://anotherdomain.net/subsubdir/index.html</loc>
-		<changefreq>yearly</changefreq>
-		<priority>0.7</priority>
-		<lastmod>2015-04-08T15:43:04.000Z</lastmod>
-	</url>
-	<url>
 		<loc>http://anotherdomain.net/subsubdir/other-doc.html</loc>
 		<changefreq>weekly</changefreq>
 		<priority>0.8</priority>
 		<lastmod>2015-04-08T15:42:54.000Z</lastmod>
+	</url>
+	<url>
+		<loc>http://anotherdomain.net/subsubdir/index.php</loc>
+		<changefreq>yearly</changefreq>
+		<priority>0.7</priority>
+		<lastmod>2015-04-08T15:43:04.000Z</lastmod>
 	</url>
 </urlset>
