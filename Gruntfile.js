@@ -34,16 +34,16 @@ module.exports = function(grunt) {
         options: {
         },
         files: {
-          'tmp/default_options': ['test/fixtures/testing', 'test/fixtures/123']
+          'tmp/default_options.xml': ['test/fixtures/test-document-1.html', 'test/fixtures/test-document-2.html', 'test/fixtures/test-document-3.html']
         }
       },
       custom_options: {
         options: {
-          separator: ': ',
-          punctuation: ' !!!'
+          baseurl: 'http://mydomain.com/',
+          compress: false
         },
         files: {
-          'tmp/custom_options': ['test/fixtures/testing', 'test/fixtures/123']
+          'tmp/custom_options.xml': ['test/fixtures/*.html']
         }
       }
     },
