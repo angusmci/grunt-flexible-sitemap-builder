@@ -38,7 +38,7 @@ The `flexible_sitemap_builder` task reads this element and uses it to generate a
 		<priority>0.7</priority>
 	</url>
 
-Purists may feel that using a &lt;meta&gt; element that will only ever be meaningful to a single Grunt plugin is an inelegant hack. That information doesn't really have any place in the page that will be served to the user, and results in serving a small number of surplus bytes with every request. If this bothers you, you may prefer another approach. However, from the point of view of the page author, it's a simpler and more maintainable solution than, say, generating sitemaps by hand or maintaining a separate database of pages with their respective priorities and update frequencies.
+Purists may feel that using a &lt;meta&gt; element that will only ever be meaningful to a single Grunt plugin is an inelegant hack (which it is). That information doesn't really have any place in the page that will be served to the user, and results in serving a small number of surplus bytes with every request. If this bothers you, you may prefer another approach. However, from the point of view of the page author, it's a simpler and more maintainable solution than, say, generating sitemaps by hand or maintaining a separate database of pages with their respective priorities and update frequencies. Note also that the options allow you to specify a default value, so that you can use the &lt;meta&gt; element just as an override for pages that really need it.
 
 In your project's Gruntfile, add a section named `flexible_sitemap_builder` to the data object passed into `grunt.initConfig()`.
 
@@ -57,48 +57,74 @@ grunt.initConfig({
 
 ### Options
 
-#### options.separator
+#### options.baseurl
 Type: `String`
-Default value: `',  '`
+Default value: `http://example.com/`
 
-A string value that is used to do something with whatever.
+URL used as a prefix for all URLs included in the sitemap. This is a required option.
 
-#### options.punctuation
+#### options.compress
+Type: `Boolean`
+Default value: `true`
+
+Determines whether the sitemap index file should be compressed using `gzip` or not.
+
+### options.default_settings
 Type: `String`
-Default value: `'.'`
+Default value: ''
 
-A string value that is used to do something else with whatever else.
+A default 'changefreq,priority' setting to be used on pages that don't have an `x-sitemap-settings` &lt;meta&gt; element. If this option is not provided, pages that don't have the &lt;meta&gt; element won't be included in sitemaps. If it is, they will be included, with `changefreq` and `priority` values based on the default. If you want to include a default value to use but still exclude certain pages from the sitemap, use file selectors to control which pages are included. An example value might be `'monthly,0.3'`.
+
+### options.default_settings
+Type: `List`
+Default value: `[ 'index.html' ]`
+
+Specifies files that should be treated as indexes. For index files, the filename is not included in the URL added to the sitemap. For example, if you had a file at the path `foo/index.html`, the URL would be `http://example.com/foo/`, rather than `http://example.com/foo/index.html`.
 
 ### Usage Examples
 
 #### Default Options
-In this example, the default options are used to do something with whatever. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result would be `Testing, 1 2 3.`
+In this example, the default options simply give a list of HTML files to be included in the sitemap. The sitemap will be written out to the file `default_options.xml` in the `build` directory, and then compressed (because compression is the default option), creating a file `default_options.xml.gz`.
 
 ```js
 grunt.initConfig({
-  flexible_sitemap_builder: {
-    options: {},
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
-  },
+    flexible_sitemap_builder: {
+      default_options: {
+        options: {
+        },
+        files: {
+          'build/default_options.xml': ['source/test-document-1.html', 
+                                        'source/test-document-2.html', 
+                                        'source/test-document-3.html']
+        }
+      },
+    }
 });
 ```
 
 #### Custom Options
-In this example, custom options are used to do something else with whatever else. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result in this case would be `Testing: 1 2 3 !!!`
+In this example, every HTML or PHP file in the `source/subdir` directory will be added to a sitemap called `subdir_sitemap.xml`. The sitemap will not be compressed after creation, and it will use default settings of `monthly` and `0.7` for the change frequency and priority respectively. The sitemap will be constructed using `http://mydomain.org` as the base URL, and any `index.html` or `index.php` files will be treated as indexes (meaning that their URLs will be abbreviated before being added to the sitemap).
+
+Note that you will almost always want to use a file selector that includes an explicit `cwd`, as in this example. This is needed to ensure that you get the correct URLs in your sitemap. If you don't, the URLs may contain elements of the local paths from your build environment, i.e. you might get `http://yourdomain.com/source/photos/kitten.html` where what you really wanted was `http://yourdomain.com/photos/kitten.html`.
 
 ```js
 grunt.initConfig({
-  flexible_sitemap_builder: {
-    options: {
-      separator: ': ',
-      punctuation: ' !!!',
-    },
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
-  },
+    flexible_sitemap_builder: {
+      custom_options3: {
+        options: {
+          baseurl: 'http://mydomain.org/',
+          compress: false,
+          default_settings: "monthly,0.7",
+          indexes: [ 'index.html', 'index.php' ]
+        },
+		files: [{
+			expand: false,
+			cwd: 'source/subdir',
+			src: ['**/*.html', '**/*.php'],
+			dest: 'build/subdir_sitemap.xml'
+		}]
+      }
+    }
 });
 ```
 
