@@ -2,7 +2,7 @@
   "name": "grunt-flexible-sitemap-builder",
   "description": "A sitemap builder plugin for Grunt",
   "version": "0.1.4",
-  "homepage": "https://github.com/angus/grunt-flexible-sitemap-builder",
+  "homepage": "https://github.com/angusmci/grunt-flexible-sitemap-builder",
   "author": {
     "name": "Angus McIntyre",
     "email": "am-opensource@taumail.com",
@@ -10,10 +10,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/angus/grunt-flexible-sitemap-builder.git"
+    "url": "git://github.com/angusmci/grunt-flexible-sitemap-builder.git"
   },
   "bugs": {
-    "url": "https://github.com/angus/grunt-flexible-sitemap-builder/issues"
+    "url": "https://github.com/angusmci/grunt-flexible-sitemap-builder/issues"
   },
   "license": "MIT",
   "engines": {
