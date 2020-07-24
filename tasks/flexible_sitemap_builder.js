@@ -36,9 +36,9 @@ module.exports = function (grunt) {
       // as users will typically want to change the working directory when
       // using this task.
 
-      var cwd_dir = this.files[0].cwd;
-      if (cwd_dir === undefined) {
-        cwd_dir = "";
+      var cwdDir = this.files[0].cwd;
+      if (cwdDir === undefined) {
+        cwdDir = "";
       }
 
       // Iterate over all specified file groups.
@@ -47,7 +47,7 @@ module.exports = function (grunt) {
         var entry = f.src
           .filter(function (filepath) {
             // Warn on and remove invalid source files (if nonull was set).
-            if (!grunt.file.exists(path.join(cwd_dir, filepath))) {
+            if (!grunt.file.exists(path.join(cwdDir, filepath))) {
               grunt.log.warn('Source file "' + filepath + '" not found.');
               return false;
             } else {
@@ -56,7 +56,7 @@ module.exports = function (grunt) {
           })
           .map(function (filepath) {
             // Read file source.
-            return makeEntry(filepath, cwd_dir, options, parser, parserStore);
+            return makeEntry(filepath, cwdDir, options, parser, parserStore);
           })
           .join("");
 
@@ -99,28 +99,23 @@ module.exports = function (grunt) {
     return parser;
   };
 
-  var makeEntry = function (filepath, cwd_dir, options, parser, store) {
-    var absfilepath = path.join(cwd_dir, filepath);
-    var stat = fs.lstatSync(absfilepath);
+  var makeEntry = function (filePath, cwdDir, options, parser, store) {
+    var absFilePath = path.join(cwdDir, filePath);
+    var stat = fs.lstatSync(absFilePath);
     var timestamp = stat.mtime;
-    var url = build_url(filepath, options);
-    var setting_string = read_setting_string(
-      absfilepath,
-      options,
-      parser,
-      store
-    );
-    if (setting_string === "" || setting_string.endsWith("0.0")) {
+    var url = buildUrl(filePath, options);
+    var settingString = readSettingString(absFilePath, options, parser, store);
+    if (settingString === "" || settingString.endsWith("0.0")) {
       return "";
     } else {
-      var pieces = setting_string.split(",");
-      var changefreq = pieces[0];
+      var pieces = settingString.split(",");
+      var changeFreq = pieces[0];
       var priority = pieces[1];
       return (
         "\n\t<url>\n\t\t<loc>" +
         url +
         "</loc>\n\t\t<changefreq>" +
-        changefreq +
+        changeFreq +
         "</changefreq>\n\t\t<priority>" +
         priority +
         "</priority>\n\t\t<lastmod>" +
@@ -130,7 +125,7 @@ module.exports = function (grunt) {
     }
   };
 
-  var build_url = function (filepath, options) {
+  var buildUrl = function (filepath, options) {
     // If the filename is one of the names given in indexes, e.g. 'index.html', then
     // strip off the filename before building the URL.
 
@@ -153,7 +148,7 @@ module.exports = function (grunt) {
     return options.baseurl + filepath;
   };
 
-  var read_setting_string = function (filepath, options, parser, store) {
+  var readSettingString = function (filepath, options, parser, store) {
     // Parse the HTML file, looking for an 'x-sitemap-settings' meta element.
 
     var html = fs.readFileSync(filepath, "utf8");
