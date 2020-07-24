@@ -1,7 +1,7 @@
 {
   "name": "grunt-flexible-sitemap-builder",
   "description": "A sitemap builder plugin for Grunt",
-  "version": "0.1.4",
+  "version": "0.2.2",
   "homepage": "https://github.com/angusmci/grunt-flexible-sitemap-builder",
   "author": {
     "name": "Angus McIntyre",
